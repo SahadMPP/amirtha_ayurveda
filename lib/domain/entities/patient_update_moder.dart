@@ -45,7 +45,7 @@ class PatientUpdate {
       advanceAmount: json['advance_amount'] ?? 0.0,
       balanceAmount: json['balance_amount'] ?? 0.0,
       dateNdTime: json['date_nd_time'] ?? '',
-      id: '', // Always pass empty string for 'id'
+      id: '', 
       male: json['male'] ?? '',
       female: json['female'] ?? '',
       branch: json['branch'] ?? '',
@@ -65,7 +65,7 @@ class PatientUpdate {
       'advance_amount': advanceAmount,
       'balance_amount': balanceAmount,
       'date_nd_time': dateNdTime,
-      'id': '', // Always send empty string for 'id'
+      'id': '', 
       'male': male,
       'female': female,
       'branch': branch,

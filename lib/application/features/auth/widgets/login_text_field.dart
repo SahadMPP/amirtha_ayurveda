@@ -5,14 +5,15 @@ class CustomTextField extends StatelessWidget {
   final String hintText;
   final bool obsecure;
   final String? validator;
-  final TextEditingController? controller;
+  final TextEditingController controller;
+  final TextInputType keyboardListener;
   const CustomTextField({
     super.key,
-    this.controller,
+   required this.controller,
     this.validator,
     required this.label,
     required this.hintText,
-    required this.obsecure,
+    required this.obsecure, required this.keyboardListener,
   });
 
   @override
@@ -40,6 +41,7 @@ class CustomTextField extends StatelessWidget {
           ),
           const SizedBox(height: 5),
           TextFormField(
+            keyboardType: keyboardListener,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             controller: controller,
             obscureText: obsecure,

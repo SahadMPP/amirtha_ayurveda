@@ -43,6 +43,7 @@ class LoginPage extends StatelessWidget {
             child: Column(
               children: [
                 CustomTextField(
+                  keyboardListener: TextInputType.text,
                     validator: "Enter Email",
                     controller:authProvider.emailController,
                     hintText: 'Enter your email',
@@ -50,6 +51,7 @@ class LoginPage extends StatelessWidget {
                     obsecure: false),
                 const SizedBox(height: 5),
                 CustomTextField(
+                  keyboardListener: TextInputType.text,
                     validator: "Enter password",
                     controller:authProvider.passwordController,
                     hintText: 'Enter password',

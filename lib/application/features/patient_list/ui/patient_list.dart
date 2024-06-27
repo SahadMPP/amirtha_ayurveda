@@ -11,6 +11,7 @@ class PatientListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final patientProvider = Provider.of<PatientListProvider>(context);
     return Scaffold(
+      backgroundColor: Colors.white,
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(6.0),
         child: CoustomButton(
@@ -21,6 +22,8 @@ class PatientListPage extends StatelessWidget {
         ),
       ),
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.transparent,
         leading: Padding(
           padding: const EdgeInsets.only(left: 10),
           child: IconButton(
