@@ -1,8 +1,6 @@
-import 'package:amirtha_ayurveda/application/core/const_value.dart';
-import 'package:amirtha_ayurveda/application/features/auth/ui/login_page.dart';
-import 'package:amirtha_ayurveda/application/features/patient_list/ui/patient_list.dart';
+import 'package:amirtha_ayurveda/application/features/auth/provider/auth_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -14,7 +12,8 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
-    goToLogin(context);
+    final authProvider = Provider.of<AuthProvider>(context);
+    authProvider.spleshScreenPageDivider(context);
     return Scaffold(
       body: SizedBox(
         width: MediaQuery.of(context).size.width,
@@ -25,22 +24,5 @@ class _SplashScreenState extends State<SplashScreen> {
         ),
       ),
     );
-  }
-
-  goToLogin(context) async {
-    await Future.delayed(const Duration(seconds: 2));
-   final SharedPreferences prefs = await SharedPreferences.getInstance();
-   final bool? value = prefs.getBool(loginSharePreference);
-   if (value == null || value == false ) {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-      builder: (context) => const LoginPage(),
-    ));
-   }else{
-     Navigator.of(context).pushReplacement(MaterialPageRoute(
-      builder: (context) => const PatientListPage(),
-    ));
-   }
-
-   
   }
 }

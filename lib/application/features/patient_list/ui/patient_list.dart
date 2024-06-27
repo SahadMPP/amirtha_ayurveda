@@ -1,22 +1,21 @@
-import 'package:amirtha_ayurveda/application/features/auth/ui/login_page.dart';
 import 'package:amirtha_ayurveda/application/features/auth/widgets/button.dart';
-import 'package:amirtha_ayurveda/application/features/register_patient/ui/register_page.dart';
+import 'package:amirtha_ayurveda/application/features/patient_list/provider/patient_list_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 class PatientListPage extends StatelessWidget {
   const PatientListPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    
+    final patientProvider = Provider.of<PatientListProvider>(context);
     return Scaffold(
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(6.0),
         child: CoustomButton(
           function: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => const RegisterPage(),
-            ));
+            patientProvider.goToRegisterPage(context);
           },
           text: "Register Now",
         ),
@@ -29,31 +28,7 @@ class PatientListPage extends StatelessWidget {
               Icons.arrow_back,
             ),
             onPressed: () {
-              showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (context) => AlertDialog(
-
-                    title: const Text("Are you sure to logOut?"),
-                        actions: <Widget>[
-                          TextButton(
-                            child: const Text('Close'),
-                            onPressed: () {
-
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                          TextButton(
-                            child: const Text('Yes'),
-                            onPressed: ()async {
-                              SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-                              sharedPreferences.clear();
-                              // ignore: use_build_context_synchronously
-                              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const LoginPage(),), (route) => false);
-                            },
-                          ),
-                        ],
-                      ));
+              patientProvider.logOut(context);
             },
           ),
         ),
@@ -114,7 +89,10 @@ class PatientListPage extends StatelessWidget {
                               "Search",
                               style: TextStyle(color: Colors.white),
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              //  logOUt
+                              patientProvider.searchPatientList();
+                            },
                           ),
                         ),
                       )
@@ -135,19 +113,6 @@ class PatientListPage extends StatelessWidget {
                               color: Colors.black87),
                         ),
                         Spacer(),
-                        // Container(
-                        // decoration: BoxDecoration(border: Border.all(color: Colors.grey),
-                        //   borderRadius: BorderRadius.circular(20)
-                        // ),
-                        //   alignment: Alignment.centerRight,
-                        //   height: 40,
-                        //   width: 10,
-                        //   child: DropdownButton(hint: Text("Date"),items: const [
-                        //     DropdownMenuItem(child:Text("he"),value:"" ,),
-                        //     DropdownMenuItem(child:Text("dalascta"),value: "",),
-                        //     DropdownMenuItem(child:Text("dalascta"),value: "",),
-                        //   ], onChanged: (v) {}),
-                        // )
                       ],
                     ),
                   ),

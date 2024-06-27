@@ -1,13 +1,16 @@
 import 'package:amirtha_ayurveda/application/features/auth/widgets/button.dart';
 import 'package:amirtha_ayurveda/application/features/auth/widgets/login_text_field.dart';
+import 'package:amirtha_ayurveda/application/features/register_patient/provider/register_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+
+    final registerProvider = Provider.of<RegisterProvider>(context);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -65,7 +68,9 @@ class RegisterPage extends StatelessWidget {
             const CustomTextField(
                 label: "Balance Amount", hintText: "", obsecure: false),
             const SizedBox(height: 10),
-            CoustomButton(function: () {}, text: "Save"),
+            CoustomButton(function: () {
+              registerProvider.saveDate();
+            }, text: "Save"),
           ],
         ),
       ),
@@ -171,7 +176,9 @@ class PaymentCheckBox extends StatelessWidget {
                 Radio(
                   value: false,
                   groupValue: [],
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    
+                  },
                 ),
                 const Text(
                   "Card",
@@ -336,57 +343,55 @@ class RegisterAddingTreatmentCard extends StatelessWidget {
         CoustomButton(function: () {
 
           showDialog(context: context, builder: (context) {
-            return Container(
-              child: Column(children: [
- const CoustomDropDown(label: "Choose Treatment", hintText: "Choose prefered Treatment"),
-           const Text(
-              "Add Patients",
-              style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 14,
-                  color: Colors.black87),
-            ),
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Chip(label: Text("Male")),
-                Row(
-                  children: [
-                    CircleAvatar(
-                      backgroundColor: Colors.green,
-                      child: Center(child: Icon(Icons.minimize)),
-                    ),
-                    Chip(label: Text("0")),
-                   CircleAvatar(
-                      backgroundColor: Colors.green,
-                      child: Icon(Icons.add),
-                    ),
-                  ],
-                )
-              ],
-            ),
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Chip(label: Text("Female")),
-                Row(
-                  children: [
-                    CircleAvatar(
-                      backgroundColor: Colors.green,
-                      child: Center(child: Icon(Icons.minimize)),
-                    ),
-                    Chip(label: Text("0")),
-                   CircleAvatar(
-                      backgroundColor: Colors.green,
-                      child: Icon(Icons.add),
-                    ),
-                  ],
-                )
-              ],
-            ),
-            CoustomButton(function: (){}, text: "Save")
-              ],),
-            );
+            return Column(children: [
+             const CoustomDropDown(label: "Choose Treatment", hintText: "Choose prefered Treatment"),
+                       const Text(
+            "Add Patients",
+            style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 14,
+                color: Colors.black87),
+                        ),
+                        const Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Chip(label: Text("Male")),
+              Row(
+                children: [
+                  CircleAvatar(
+                    backgroundColor: Colors.green,
+                    child: Center(child: Icon(Icons.minimize)),
+                  ),
+                  Chip(label: Text("0")),
+                 CircleAvatar(
+                    backgroundColor: Colors.green,
+                    child: Icon(Icons.add),
+                  ),
+                ],
+              )
+            ],
+                        ),
+                        const Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Chip(label: Text("Female")),
+              Row(
+                children: [
+                  CircleAvatar(
+                    backgroundColor: Colors.green,
+                    child: Center(child: Icon(Icons.minimize)),
+                  ),
+                  Chip(label: Text("0")),
+                 CircleAvatar(
+                    backgroundColor: Colors.green,
+                    child: Icon(Icons.add),
+                  ),
+                ],
+              )
+            ],
+                        ),
+                        CoustomButton(function: (){}, text: "Save")
+            ],);
           },);
         }, text: "+ Add Treatments"),
       ],
