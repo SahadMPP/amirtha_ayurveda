@@ -1,6 +1,9 @@
+import 'package:amirtha_ayurveda/application/core/const_value.dart';
 import 'package:amirtha_ayurveda/application/features/auth/widgets/button.dart';
 import 'package:amirtha_ayurveda/application/features/auth/widgets/login_text_field.dart';
+import 'package:amirtha_ayurveda/application/features/patient_list/ui/patient_list.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -36,13 +39,18 @@ class LoginPage extends StatelessWidget {
           const SizedBox(height: 20),
           const CustomTextField(
               hintText: 'Enter your email', label: 'Email', obsecure: false),
-          const SizedBox(height: 20),
+          const SizedBox(height: 5),
           const CustomTextField(
-              hintText: 'Enter your password',
+              hintText: 'Enter password',
               label: 'Password',
               obsecure: true),
           const SizedBox(height: 70),
-           CoustomButton(function: (){},text: 'Login',),
+           CoustomButton(function: ()async{
+            final SharedPreferences prefs = await SharedPreferences.getInstance();
+            await prefs.setBool(loginSharePreference, true);        
+            // ignore: use_build_context_synchronously
+            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const PatientListPage(),), (route) => false);
+           },text: 'Login',),
           const SizedBox(height: 100),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),

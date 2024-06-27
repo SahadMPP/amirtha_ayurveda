@@ -1,8 +1,11 @@
+import 'package:amirtha_ayurveda/application/features/auth/ui/login_page.dart';
 import 'package:amirtha_ayurveda/application/features/auth/widgets/button.dart';
+import 'package:amirtha_ayurveda/application/features/register_patient/ui/register_page.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class PatientList extends StatelessWidget {
-  const PatientList({super.key});
+class PatientListPage extends StatelessWidget {
+  const PatientListPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -10,16 +13,48 @@ class PatientList extends StatelessWidget {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(6.0),
         child: CoustomButton(
-          function: () {},
+          function: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => const RegisterPage(),
+            ));
+          },
           text: "Register Now",
         ),
       ),
       appBar: AppBar(
-        leading: const Padding(
-          padding: EdgeInsets.only(left: 10),
-          child: Icon(
-            Icons.arrow_back,
-            size: 30,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 10),
+          child: IconButton(
+            icon: const Icon(
+              Icons.arrow_back,
+            ),
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (context) => AlertDialog(
+
+                    title: const Text("Are you sure to logOut?"),
+                        actions: <Widget>[
+                          TextButton(
+                            child: const Text('Close'),
+                            onPressed: () {
+
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          TextButton(
+                            child: const Text('Yes'),
+                            onPressed: ()async {
+                              SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                              sharedPreferences.clear();
+                              // ignore: use_build_context_synchronously
+                              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const LoginPage(),), (route) => false);
+                            },
+                          ),
+                        ],
+                      ));
+            },
           ),
         ),
         actions: const [
