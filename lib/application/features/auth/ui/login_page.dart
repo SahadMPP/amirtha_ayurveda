@@ -34,10 +34,10 @@ class LoginPage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
-          const LoginTextField(
+          const CustomTextField(
               hintText: 'Enter your email', label: 'Email', obsecure: false),
           const SizedBox(height: 20),
-          const LoginTextField(
+          const CustomTextField(
               hintText: 'Enter your password',
               label: 'Password',
               obsecure: true),

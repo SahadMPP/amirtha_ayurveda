@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class LoginTextField extends StatelessWidget {
+class CustomTextField extends StatelessWidget {
   final String label;
   final String hintText;
   final bool obsecure;
-  const LoginTextField({
+  const CustomTextField({
     super.key,
     required this.label,
     required this.hintText,
@@ -14,7 +14,7 @@ class LoginTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
       child: Column(
         children: [
           Align(
@@ -39,7 +39,7 @@ class LoginTextField extends StatelessWidget {
                   color: Colors.grey,
                 ),
                 filled: true,
-                fillColor: const Color.fromARGB(255, 247, 245, 245),
+                fillColor: const Color.fromARGB(255, 247, 247, 247),
                 enabledBorder: OutlineInputBorder(
                     borderSide:
                         BorderSide(color: Colors.grey[300]!, width: 1))),
