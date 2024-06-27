@@ -33,25 +33,6 @@ class PatientUpdate {
     required this.treatments,
   });
 
-  // factory PatientUpdate.fromJson(Map<String, dynamic> json) {
-  //   return PatientUpdate(
-  //     name: json['name'] ?? '',
-  //     executive: json['executive'] ?? '',
-  //     payment: json['payment'] ?? '',
-  //     phone: json['phone'] ?? '',
-  //     address: json['address'] ?? '',
-  //     totalAmount: json['total_amount'] ?? 0.0,
-  //     discountAmount: json['discount_amount'] ?? 0.0,
-  //     advanceAmount: json['advance_amount'] ?? 0.0,
-  //     balanceAmount: json['balance_amount'] ?? 0.0,
-  //     dateNdTime: json['date_nd_time'] ?? '',
-  //     id: '', 
-  //     male: json['male'] ?? '',
-  //     female: json['female'] ?? '',
-  //     branch: json['branch'] ?? '',
-  //     treatments: json['treatments'] ?? '',
-  //   );
-  // }
 
  
 }

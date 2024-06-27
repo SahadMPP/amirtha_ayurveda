@@ -88,39 +88,7 @@ class RegisterProvider extends ChangeNotifier {
     }
   }
 
-  // Future<void> saveDate() async {
-  //   const uri = "$baseUrl$endPointPateintListUpdate";
-  //   Map<String, dynamic> body = {
-  //     "name": nameController.text,
-  //     "executive": nameController.text,
-  //     "payment": currentOption,
-  //     "phone": whatsNumberController.text,
-  //     "address": addressController.text,
-  //     "total_amount": double.parse(totleAmtController.text),
-  //     "discount_amount": double.parse(discountAmtController.text),
-  //     "advance_amount": double.parse(advanceAmtController.text),
-  //     "balance_amount": double.parse(balanceAmtController.text),
-  //     "date_nd_time": "$selectedDate$selectedTime",
-  //     "id": "",
-  //     "male": maleCount.toString(),
-  //     "female": femalecount.toString(),
-  //     "branch": currentBranch,
-  //     "treatments": "Head Massage"
-  //   };
-  //   try {
-  //     final response = await http.post(Uri.parse(uri),
-  //         body: body, headers: {'Authorization': 'Bearer $currentUeserToken'});
-  //     if (response.statusCode == 200) {
-  //       debugPrint('Data added successfully');
-  //     } else {
-  //       throw Exception(
-  //           "sava to data failed got statusCode = ${response.statusCode}");
-  //     }
-  //   } catch (e) {
-  //     debugPrint("printing error $e");
-  //   }
-  // }
-
+ 
   Future<void> saveDate() {
     return RegisterUseCase().resteringDeatileToDatabase();
   }

@@ -135,19 +135,24 @@ class PatientListPage extends StatelessWidget {
                     if (patientList.isEmpty) {
                       return const Center(child: Text("list is empy"));
                     } else {
-                      return ListView.builder(
-                          itemCount: patientList.length,
-                          itemBuilder: (context, index) {
-                            final String data =
-                                "${patientList[index].dateTime.day}/${patientList[index].dateTime.month}/${patientList[index].dateTime.year}";
-                            return PatientListCard(
-                              index: index + 1,
-                              treatmentName: patientList[index].treatmentName,
-                              branchName: patientList[index].branchName,
-                              date: data,
-                              name: patientList[index].name,
-                            );
-                          });
+                      return RefreshIndicator(
+                        onRefresh: () {
+                          return patientProvider.fetchPatient();
+                        },
+                        child: ListView.builder(
+                            itemCount: patientList.length,
+                            itemBuilder: (context, index) {
+                              final String data =
+                                  "${patientList[index].dateTime.day}/${patientList[index].dateTime.month}/${patientList[index].dateTime.year}";
+                              return PatientListCard(
+                                index: index + 1,
+                                treatmentName: patientList[index].treatmentName,
+                                branchName: patientList[index].branchName,
+                                date: data,
+                                name: patientList[index].name,
+                              );
+                            }),
+                      );
                     }
                   }
                 }),

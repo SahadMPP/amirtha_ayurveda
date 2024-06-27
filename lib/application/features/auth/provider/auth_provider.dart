@@ -1,4 +1,4 @@
-import 'package:amirtha_ayurveda/application/core/const_value.dart';
+import 'package:amirtha_ayurveda/application/core/const/const_value.dart';
 import 'package:amirtha_ayurveda/application/features/auth/ui/login_page.dart';
 import 'package:amirtha_ayurveda/application/features/patient_list/ui/patient_list.dart';
 import 'package:amirtha_ayurveda/domain/usecases/auth_usecase.dart';

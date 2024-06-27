@@ -7,35 +7,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class PatientListProvider extends ChangeNotifier {
 
-
-
-  // Future<List<Patient>> fetchPatient() async {
-  //   const String url = '$baseUrl$endPointPateintList';
-
-  //   List<Patient> listOfPatient = [];
-
-  //   try {
-  //     final response = await http.get(Uri.parse(url),headers: {
-  //       'Authorization': 'Bearer $currentUeserToken'
-  //     },);
-  //     if (response.statusCode == 200) {
-  //       final Map<String, dynamic> responseBody = json.decode(response.body);
-
-  //     if (responseBody.containsKey('patient')) {
-  //       final List<dynamic> patientsList = responseBody['patient'];
-  //       return patientsList.map((json) => Patient.fromJson(json)).toList();
-  //     } else {
-  //       throw Exception('Patients data not found in the response');
-  //     }
-  //     } else {
-  //       throw Exception('Failed to load patient data');
-  //     }
-  //   } catch (e) {
-  //     debugPrint("error got like $e");
-  //   }
-  //   return listOfPatient;
-  // }
-
   Future<List<Patient>> fetchPatient()async{
     return PatientListUseCase().feachingPatientIndataBase();
   }

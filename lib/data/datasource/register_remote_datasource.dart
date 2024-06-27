@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:amirtha_ayurveda/application/core/const_value.dart';
+import 'package:amirtha_ayurveda/application/core/const/const_value.dart';
 import 'package:amirtha_ayurveda/application/features/register_patient/provider/register_provider.dart';
 import 'package:amirtha_ayurveda/data/models/branch_model.dart';
 import 'package:amirtha_ayurveda/data/models/tretment_model.dart';
