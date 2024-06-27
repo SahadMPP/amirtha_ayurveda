@@ -1,5 +1,6 @@
 import 'package:amirtha_ayurveda/application/features/auth/widgets/button.dart';
 import 'package:amirtha_ayurveda/application/features/patient_list/provider/patient_list_provider.dart';
+import 'package:amirtha_ayurveda/domain/entities/patient_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -8,7 +9,6 @@ class PatientListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     final patientProvider = Provider.of<PatientListProvider>(context);
     return Scaffold(
       bottomNavigationBar: Padding(
@@ -92,6 +92,7 @@ class PatientListPage extends StatelessWidget {
                             onPressed: () {
                               //  logOUt
                               patientProvider.searchPatientList();
+                              // patientProvider.fetchPatient();
                             },
                           ),
                         ),
@@ -121,10 +122,31 @@ class PatientListPage extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return const PatientListCard();
+            child: FutureBuilder(
+                future: patientProvider.fetchPatient(),
+                builder: (context, AsyncSnapshot snapshot) {
+                  if (!snapshot.hasData) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else {
+                    final List<Patient> patientList = snapshot.data;
+                    if (patientList.isEmpty) {
+                      return const Center(child: Text("list is empy"));
+                    } else {
+                      return ListView.builder(
+                          itemCount: patientList.length,
+                          itemBuilder: (context, index) {
+                            final String data =
+                                "${patientList[index].dateTime.day}/${patientList[index].dateTime.month}/${patientList[index].dateTime.year}";
+                            return PatientListCard(
+                              index: index + 1,
+                              treatmentName: patientList[index].treatmentName,
+                              branchName: patientList[index].branchName,
+                              date: data,
+                              name: patientList[index].name,
+                            );
+                          });
+                    }
+                  }
                 }),
           ),
         ],
@@ -134,8 +156,18 @@ class PatientListPage extends StatelessWidget {
 }
 
 class PatientListCard extends StatelessWidget {
+  final int index;
+  final String treatmentName;
+  final String branchName;
+  final String date;
+  final String name;
   const PatientListCard({
     super.key,
+    required this.index,
+    required this.treatmentName,
+    required this.branchName,
+    required this.date,
+    required this.name,
   });
 
   @override
@@ -147,7 +179,7 @@ class PatientListCard extends StatelessWidget {
       width: double.infinity,
       decoration: BoxDecoration(
           color: Colors.grey[200], borderRadius: BorderRadius.circular(12)),
-      child: const Column(
+      child: Column(
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -157,8 +189,8 @@ class PatientListCard extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.topRight,
                   child: Text(
-                    "1.  ",
-                    style: TextStyle(
+                    "$index  ",
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
                       color: Colors.black,
@@ -172,38 +204,38 @@ class PatientListCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Vikram Singh",
-                      style: TextStyle(
+                      branchName,
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
                         color: Colors.black,
                       ),
                     ),
                     Text(
-                      "Couple combo packege(Rejuve......",
+                      treatmentName,
                       maxLines: 1,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 14,
                         color: Color.fromARGB(255, 32, 102, 35),
                       ),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Row(
                       children: [
                         Expanded(
                           flex: 2,
                           child: Row(
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.calendar_month,
                                 color: Colors.redAccent,
                                 size: 16,
                               ),
-                              SizedBox(width: 5),
+                              const SizedBox(width: 5),
                               Text(
-                                "31/01/2024",
-                                style: TextStyle(
+                                date,
+                                style: const TextStyle(
                                   color: Colors.grey,
                                 ),
                               ),
@@ -214,15 +246,15 @@ class PatientListCard extends StatelessWidget {
                           flex: 3,
                           child: Row(
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.person_3_outlined,
                                 color: Colors.redAccent,
                                 size: 16,
                               ),
-                              SizedBox(width: 5),
+                              const SizedBox(width: 5),
                               Text(
-                                "Jithesh",
-                                style: TextStyle(
+                                name,
+                                style: const TextStyle(
                                   color: Colors.grey,
                                 ),
                               ),
@@ -237,8 +269,8 @@ class PatientListCard extends StatelessWidget {
             ],
           ),
           // const SizedBox(height: 5),
-          Divider(),
-          SizedBox(
+          const Divider(),
+          const SizedBox(
             width: double.infinity,
             height: 30,
             child: Row(
