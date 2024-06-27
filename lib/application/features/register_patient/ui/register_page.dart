@@ -1,15 +1,25 @@
 import 'package:amirtha_ayurveda/application/features/auth/widgets/button.dart';
 import 'package:amirtha_ayurveda/application/features/auth/widgets/login_text_field.dart';
 import 'package:amirtha_ayurveda/application/features/register_patient/provider/register_provider.dart';
+import 'package:amirtha_ayurveda/domain/entities/branch_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-class RegisterPage extends StatelessWidget {
+class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  State<RegisterPage> createState() => _RegisterPageState();
+}
 
+List<String> paymentOption = ["Cash", "Card", "UPI"];
+
+class _RegisterPageState extends State<RegisterPage> {
+  String currentOption = paymentOption[0];
+
+  @override
+  Widget build(BuildContext context) {
     final registerProvider = Provider.of<RegisterProvider>(context);
     return Scaffold(
       backgroundColor: Colors.white,
@@ -53,24 +63,79 @@ class RegisterPage extends StatelessWidget {
                 hintText: "Enter your full address",
                 obsecure: false),
             const CoustomDropDown(
-                label: "Location", hintText: "Chouse your location"),
-            const CoustomDropDown(
-                label: "Branch", hintText: "Select the branch"),
+                list: [], label: "Location", hintText: "Chouse your location"),
+            FutureBuilder(future: registerProvider.feachingBranch(),builder: (context,AsyncSnapshot snapshot) {
+              if (!snapshot.hasData) {
+              return  const CoustomDropDown(
+                  list: [], label: "Branch", hintText: "Select the branch");
+              } else {
+                return  CoustomDropDown(
+                  list: snapshot.data, label: "Branch", hintText: "Select the branch");
+              }
+            }),
             const SizedBox(height: 10),
             const RegisterAddingTreatmentCard(),
             const CustomTextField(
                 label: "Total Amount", hintText: "", obsecure: false),
             const CustomTextField(
                 label: "Discount Amount", hintText: "", obsecure: false),
-            const PaymentCheckBox(),
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: EdgeInsets.only(left: 20),
+                child: Text(
+                  "Payment Option",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 14,
+                      color: Colors.black87),
+                ),
+              ),
+            ),
+            Row(
+              children: [
+                Radio(
+                  value: paymentOption[0],
+                  groupValue: currentOption,
+                  onChanged: (value) {
+                    setState(() {
+                      currentOption = value.toString();
+                    });
+                  },
+                ),
+                Radio(
+                  value: paymentOption[1],
+                  groupValue: currentOption,
+                  onChanged: (value) {
+                    setState(() {
+                      currentOption = value.toString();
+                    });
+                  },
+                ),
+                Radio(
+                  value: paymentOption[2],
+                  groupValue: currentOption,
+                  onChanged: (value) {
+                    setState(() {
+                      currentOption = value.toString();
+                    });
+                  },
+                ),
+              ],
+            ),
             const CustomTextField(
                 label: "Advance Amount", hintText: "", obsecure: false),
             const CustomTextField(
                 label: "Balance Amount", hintText: "", obsecure: false),
             const SizedBox(height: 10),
-            CoustomButton(function: () {
-              registerProvider.saveDate();
-            }, text: "Save"),
+            CoustomButton(
+                function: () {
+                  // registerProvider.saveDate();
+
+                  // registerProvider.feachingBranch();
+                },
+                text: "Save"),
+            const SizedBox(height: 20),
           ],
         ),
       ),
@@ -79,12 +144,14 @@ class RegisterPage extends StatelessWidget {
 }
 
 class CoustomDropDown extends StatelessWidget {
+  final List<Branch> list;
   final String label;
   final String hintText;
   const CoustomDropDown({
     super.key,
     required this.label,
     required this.hintText,
+    required this.list,
   });
 
   @override
@@ -106,6 +173,7 @@ class CoustomDropDown extends StatelessWidget {
         ),
         const SizedBox(height: 5),
         DropdownMenu(
+          
           expandedInsets: const EdgeInsets.all(14),
           inputDecorationTheme: InputDecorationTheme(
               filled: true,
@@ -131,97 +199,18 @@ class CoustomDropDown extends StatelessWidget {
           menuStyle: MenuStyle(
               shape: MaterialStatePropertyAll(ContinuousRectangleBorder(
                   borderRadius: BorderRadius.circular(20)))),
-          dropdownMenuEntries: const [
-            DropdownMenuEntry(value: "", label: 'heloo'),
-            DropdownMenuEntry(value: "", label: 'hel'),
-            DropdownMenuEntry(value: "", label: 'hel'),
-            DropdownMenuEntry(value: "", label: 'hel'),
-          ],
+                  
+          dropdownMenuEntries:
+              list.map<DropdownMenuEntry<String>>((Branch branch) {
+            return DropdownMenuEntry<String>(
+              value: branch.name,
+              label: branch.name,
+            );
+          }).toList(),
+        
           onSelected: (value) {},
           enableSearch: false,
           enableFilter: true,
-        ),
-      ],
-    );
-  }
-}
-
-class PaymentCheckBox extends StatelessWidget {
-  const PaymentCheckBox({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const Align(
-          alignment: Alignment.centerLeft,
-          child: Padding(
-            padding: EdgeInsets.only(left: 20),
-            child: Text(
-              "Payment Option",
-              style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 14,
-                  color: Colors.black87),
-            ),
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Row(
-              children: [
-                Radio(
-                  value: false,
-                  groupValue: [],
-                  onChanged: (value) {
-                    
-                  },
-                ),
-                const Text(
-                  "Card",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 12,
-                      color: Colors.black87),
-                )
-              ],
-            ),
-            Row(
-              children: [
-                Radio(
-                  value: false,
-                  groupValue: [],
-                  onChanged: (value) {},
-                ),
-                const Text(
-                  "Card",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 12,
-                      color: Colors.black87),
-                )
-              ],
-            ),
-            Row(
-              children: [
-                Radio(
-                  value: false,
-                  groupValue: [],
-                  onChanged: (value) {},
-                ),
-                const Text(
-                  "Card",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 12,
-                      color: Colors.black87),
-                )
-              ],
-            ),
-          ],
         ),
       ],
     );
@@ -340,60 +329,69 @@ class RegisterAddingTreatmentCard extends StatelessWidget {
             ],
           ),
         ),
-        CoustomButton(function: () {
-
-          showDialog(context: context, builder: (context) {
-            return Column(children: [
-             const CoustomDropDown(label: "Choose Treatment", hintText: "Choose prefered Treatment"),
-                       const Text(
-            "Add Patients",
-            style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: 14,
-                color: Colors.black87),
-                        ),
-                        const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Chip(label: Text("Male")),
-              Row(
-                children: [
-                  CircleAvatar(
-                    backgroundColor: Colors.green,
-                    child: Center(child: Icon(Icons.minimize)),
-                  ),
-                  Chip(label: Text("0")),
-                 CircleAvatar(
-                    backgroundColor: Colors.green,
-                    child: Icon(Icons.add),
-                  ),
-                ],
-              )
-            ],
-                        ),
-                        const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Chip(label: Text("Female")),
-              Row(
-                children: [
-                  CircleAvatar(
-                    backgroundColor: Colors.green,
-                    child: Center(child: Icon(Icons.minimize)),
-                  ),
-                  Chip(label: Text("0")),
-                 CircleAvatar(
-                    backgroundColor: Colors.green,
-                    child: Icon(Icons.add),
-                  ),
-                ],
-              )
-            ],
-                        ),
-                        CoustomButton(function: (){}, text: "Save")
-            ],);
-          },);
-        }, text: "+ Add Treatments"),
+        CoustomButton(
+            function: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return Column(
+                    children: [
+                      const CoustomDropDown(
+                          list: [],
+                          label: "Choose Treatment",
+                          hintText: "Choose prefered Treatment"),
+                      const Text(
+                        "Add Patients",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14,
+                            color: Colors.black87),
+                      ),
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Chip(label: Text("Male")),
+                          Row(
+                            children: [
+                              CircleAvatar(
+                                backgroundColor: Colors.green,
+                                child: Center(child: Icon(Icons.minimize)),
+                              ),
+                              Chip(label: Text("0")),
+                              CircleAvatar(
+                                backgroundColor: Colors.green,
+                                child: Icon(Icons.add),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Chip(label: Text("Female")),
+                          Row(
+                            children: [
+                              CircleAvatar(
+                                backgroundColor: Colors.green,
+                                child: Center(child: Icon(Icons.minimize)),
+                              ),
+                              Chip(label: Text("0")),
+                              CircleAvatar(
+                                backgroundColor: Colors.green,
+                                child: Icon(Icons.add),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                      CoustomButton(function: () {}, text: "Save")
+                    ],
+                  );
+                },
+              );
+            },
+            text: "+ Add Treatments"),
       ],
     );
   }
