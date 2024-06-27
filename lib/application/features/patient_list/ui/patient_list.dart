@@ -1,6 +1,6 @@
 import 'package:amirtha_ayurveda/application/features/auth/widgets/button.dart';
 import 'package:amirtha_ayurveda/application/features/patient_list/provider/patient_list_provider.dart';
-import 'package:amirtha_ayurveda/domain/entities/patient_model.dart';
+import 'package:amirtha_ayurveda/domain/entities/patient_entitie.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

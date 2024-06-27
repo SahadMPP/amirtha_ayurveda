@@ -1,8 +1,8 @@
-import 'package:amirtha_ayurveda/domain/entities/branch_model.dart';
+import 'package:amirtha_ayurveda/data/models/branch_model.dart';
 
 class Treatment {
   int id;
-  List<Branch> branches;
+  List<BranchModel> branches;
 
   Treatment({
     required this.id,
@@ -11,7 +11,7 @@ class Treatment {
 
   factory Treatment.fromJson(Map<String, dynamic> json) {
     var branchesList = json['branches'] as List;
-    List<Branch> branchList = branchesList.map((i) => Branch.fromJson(i)).toList();
+    List<BranchModel> branchList = branchesList.map((i) => BranchModel.fromJson(i)).toList();
 
     return Treatment(
       id: json['id'] ?? 0,

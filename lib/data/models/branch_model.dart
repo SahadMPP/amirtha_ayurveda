@@ -1,28 +1,24 @@
-class Branch {
-  int id;
-  String name;
-  int patientsCount;
-  String location;
-  String phone;
-  String mail;
-  String address;
-  String gst;
-  bool isActive;
+import 'package:amirtha_ayurveda/domain/entities/branch_entitie.dart';
 
-  Branch({
-    required this.id,
-    required this.name,
-    required this.patientsCount,
-    required this.location,
-    required this.phone,
-    required this.mail,
-    required this.address,
-    required this.gst,
-    required this.isActive,
-  });
+class BranchModel extends Branch {
 
-  factory Branch.fromJson(Map<String, dynamic> json) {
-    return Branch(
+  // ignore: use_super_parameters
+  BranchModel({
+    required id,
+    required name,
+    required patientsCount,
+    required location,
+    required phone,
+    required mail,
+    required address,
+    required gst,
+    required isActive,
+  }) :super(address: address,gst:gst ,id: id,isActive: isActive,location: location,mail:mail ,name: name,patientsCount: patientsCount,phone: phone);
+
+
+
+  factory BranchModel.fromJson(Map<String, dynamic> json) {
+    return BranchModel(
       id: json['id'] ?? 0,
       name: json['name'] ?? '',
       patientsCount: json['patients_count'] ?? 0,

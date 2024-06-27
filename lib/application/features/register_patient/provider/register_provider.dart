@@ -1,10 +1,9 @@
 import 'dart:convert';
-import 'dart:js_interop';
-import 'package:amirtha_ayurveda/application/core/const_value.dart';
-import 'package:amirtha_ayurveda/domain/entities/branch_model.dart';
-import 'package:amirtha_ayurveda/domain/entities/treatment_model.dart';
+import 'package:amirtha_ayurveda/data/models/tretment_model.dart';
+import 'package:amirtha_ayurveda/domain/entities/branch_entitie.dart';
+import 'package:amirtha_ayurveda/domain/entities/treatment_entitie.dart';
+import 'package:amirtha_ayurveda/domain/usecases/register_usecase.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 class RegisterProvider extends ChangeNotifier {
   //
@@ -65,11 +64,12 @@ class RegisterProvider extends ChangeNotifier {
     notifyListeners();
   }
 
- pikingBranch(value){
-   currentBranch = value;
+  pikingBranch(value) {
+    currentBranch = value;
 
-   notifyListeners();
- }
+    notifyListeners();
+  }
+
   minasingFemaleCount() {
     if (femalecount > 0) {
       femalecount--;
@@ -88,38 +88,41 @@ class RegisterProvider extends ChangeNotifier {
     }
   }
 
-  saveDate() async {
-    const uri = "$baseUrl$endPointPateintListUpdate";
-     Map<String, dynamic> body = {
-  "name": nameController.text,
-  "executive": nameController.text,
-  "payment": currentOption,
-  "phone": whatsNumberController.text,
-  "address": addressController.text,
-  "total_amount":   double.parse(totleAmtController.text),
-  "discount_amount":double.parse(discountAmtController.text),
-  "advance_amount": double.parse(advanceAmtController.text),
-  "balance_amount": double.parse(balanceAmtController.text),
-  "date_nd_time": "$selectedDate$selectedTime",
-  "id": "",
-  "male": maleCount.toString(),
-  "female": femalecount.toString(),
-  "branch":currentBranch ,
-  "treatments": "Head Massage"
-};
-    try {
-      final response = await http.post(Uri.parse(uri),
-      body:body ,
-          headers: {'Authorization': 'Bearer $currentUeserToken'});
-      if (response.statusCode == 200) {
-        debugPrint('Data added successfully');
-      } else {
-        throw Exception(
-            "sava to data failed got statusCode = ${response.statusCode}");
-      }
-    } catch (e) {
-      debugPrint("printing error $e");
-    }
+  // Future<void> saveDate() async {
+  //   const uri = "$baseUrl$endPointPateintListUpdate";
+  //   Map<String, dynamic> body = {
+  //     "name": nameController.text,
+  //     "executive": nameController.text,
+  //     "payment": currentOption,
+  //     "phone": whatsNumberController.text,
+  //     "address": addressController.text,
+  //     "total_amount": double.parse(totleAmtController.text),
+  //     "discount_amount": double.parse(discountAmtController.text),
+  //     "advance_amount": double.parse(advanceAmtController.text),
+  //     "balance_amount": double.parse(balanceAmtController.text),
+  //     "date_nd_time": "$selectedDate$selectedTime",
+  //     "id": "",
+  //     "male": maleCount.toString(),
+  //     "female": femalecount.toString(),
+  //     "branch": currentBranch,
+  //     "treatments": "Head Massage"
+  //   };
+  //   try {
+  //     final response = await http.post(Uri.parse(uri),
+  //         body: body, headers: {'Authorization': 'Bearer $currentUeserToken'});
+  //     if (response.statusCode == 200) {
+  //       debugPrint('Data added successfully');
+  //     } else {
+  //       throw Exception(
+  //           "sava to data failed got statusCode = ${response.statusCode}");
+  //     }
+  //   } catch (e) {
+  //     debugPrint("printing error $e");
+  //   }
+  // }
+
+  Future<void> saveDate() {
+    return RegisterUseCase().resteringDeatileToDatabase();
   }
 
   addingTretment(context) {
@@ -134,24 +137,7 @@ class RegisterProvider extends ChangeNotifier {
   }
 
   Future<List<Branch>> feachingBranch() async {
-    List<Branch> branchList = [];
-
-    const String url = '$baseUrl$endPointBranchList';
-    try {
-      final response = await http.get(Uri.parse(url),
-          headers: {'Authorization': 'Bearer $currentUeserToken'});
-
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> responseBody = json.decode(response.body);
-        final List<dynamic> branchList = responseBody['branches'];
-        return branchList.map((json) => Branch.fromJson(json)).toList();
-      } else {
-        throw Exception('Failed to get Branch');
-      }
-    } catch (e) {
-      debugPrint("error got like $e");
-    }
-    return branchList;
+    return RegisterUseCase().feachingBranch();
   }
 
   changingPaymentType(value) {
@@ -160,25 +146,14 @@ class RegisterProvider extends ChangeNotifier {
   }
 
   Future<List<Treatment>> fetchTreatments() async {
-    const String url = '$baseUrl$endPointTreatment';
-    try {
-      final response = await http.get(Uri.parse(url),
-          headers: {'Authorization': 'Bearer $currentUeserToken'});
-
-      if (response.statusCode == 200) {
-        List<Treatment> treatments = parseTreatments(response.body);
-        return treatments;
-      } else {
-        throw Exception('Failed to load treatments');
-      }
-    } catch (e) {
-      throw Exception('Failed to load treatments');
-    }
+    return RegisterUseCase().feachingTretments();
   }
 
-  List<Treatment> parseTreatments(String responseBody) {
+  static List<TreatmentModel> parseTreatments(String responseBody) {
     final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
 
-    return parsed.map<Treatment>((json) => Treatment.fromJson(json)).toList();
+    return parsed
+        .map<TreatmentModel>((json) => TreatmentModel.fromJson(json))
+        .toList();
   }
 }
